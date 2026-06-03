@@ -219,9 +219,7 @@ app.post('/api/beds/discharge', async (req, res) => {
     }
 
     if (bed.isOccupied && bed.patientId) {
-      await Patient.findByIdAndUpdate(bed.patientId, { 
-        status: 'Treated', treatedAt: Date.now()
-      });
+      await Patient.findByIdAndDelete(bed.patientId);
     }
 
     const q = hospitalQueues.get(hospitalId);
