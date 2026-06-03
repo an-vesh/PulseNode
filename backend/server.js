@@ -165,7 +165,10 @@ app.post('/api/auth/demo', async (req, res) => {
         location: "Virtual Cloud",
         capacity: 10,
         adminEmail: "demo@demo.com",
-        password: hashedPassword
+        password: hashedPassword,
+        generalBedsCount: 10,
+        privateBedsCount: 0,
+        employeeCount: 50
       });
       await demoHospital.save();
 
