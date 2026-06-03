@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-[#030014] text-slate-200 antialiased selection:bg-pink-500/30;
+  }
+}
+
+/* Custom Scrollbar for sleek aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-white/5 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full hover:bg-white/30 transition-colors;
+}
