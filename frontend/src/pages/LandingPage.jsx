@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ActivitySquare, ArrowRight, ShieldCheck, Zap, Server, Clock, HeartPulse, Building2 } from 'lucide-react';
+import { ActivitySquare, ArrowRight, ShieldCheck, Zap, Server, Clock, HeartPulse, Building2, Database, Trash2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
@@ -203,7 +203,25 @@ export default function LandingPage() {
             <FeatureCard 
               icon={<ShieldCheck className="w-8 h-8 text-pink-400" />}
               title="Multi-Tenant SaaS"
-              desc="Multiple hospitals can use PulseNode simultaneously. Our isolated WebSocket rooms guarantee that Hospital A's live updates never bleed into Hospital B's dashboard."
+              desc="Multiple hospitals can use PulseNode simultaneously. Our strict data isolation guarantees that Hospital A's live updates never bleed into Hospital B's dashboard."
+              color="pink"
+            />
+            <FeatureCard 
+              icon={<Database className="w-8 h-8 text-emerald-400" />}
+              title="Bulletproof Persistence"
+              desc="MongoDB ensures all active patient queues and bed assignments are permanently saved. If you close your tab or log out, your Command Center state is instantly restored exactly as you left it."
+              color="emerald"
+            />
+            <FeatureCard 
+              icon={<ActivitySquare className="w-8 h-8 text-purple-400" />}
+              title="Real-Time WebSocket Sync"
+              desc="Instant cross-device synchronization. If a nurse updates a patient's vitals on an iPad, the doctor's desktop Command Center updates the priority queue in milliseconds without refreshing."
+              color="purple"
+            />
+            <FeatureCard 
+              icon={<Trash2 className="w-8 h-8 text-pink-400" />}
+              title="Algorithmic Auto-Deletions"
+              desc="Discharged patients are wiped from the active database automatically to maintain a lean memory footprint, optimizing free-tier cloud usage while preserving privacy."
               color="pink"
             />
           </div>
@@ -272,8 +290,8 @@ export default function LandingPage() {
 }
 
 function FeatureCard({ icon, title, desc, color }) {
-  const bgClass = color === 'pink' ? 'bg-pink-900/10 border-pink-500/20' : 'bg-purple-900/10 border-purple-500/20';
-  const innerBgClass = color === 'pink' ? 'bg-pink-500/10 border-pink-500/20' : 'bg-purple-500/10 border-purple-500/20';
+  const bgClass = color === 'pink' ? 'bg-pink-900/10 border-pink-500/20' : color === 'emerald' ? 'bg-emerald-900/10 border-emerald-500/20' : 'bg-purple-900/10 border-purple-500/20';
+  const innerBgClass = color === 'pink' ? 'bg-pink-500/10 border-pink-500/20' : color === 'emerald' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-purple-500/10 border-purple-500/20';
   
   return (
     <motion.div 
