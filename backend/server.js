@@ -153,6 +153,37 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+// 1.6. Live Demo Login
+app.post('/api/auth/demo', async (req, res) => {
+  try {
+    let demoHospital = await Hospital.findOne({ name: "Demo Hospital" });
+    
+    if (!demoHospital) {
+      const hashedPassword = await bcrypt.hash("demo123", 10);
+      demoHospital = new Hospital({
+        name: "Demo Hospital",
+        location: "Virtual Cloud",
+        capacity: 10,
+        adminEmail: "demo@demo.com",
+        password: hashedPassword
+      });
+      await demoHospital.save();
+
+      const bedsToCreate = [];
+      for (let i = 1; i <= 10; i++) {
+        bedsToCreate.push({ bedNumber: `D-${i}`, bedType: 'General', hospitalId: demoHospital._id });
+      }
+      await Bed.insertMany(bedsToCreate);
+
+      hospitalQueues.set(demoHospital._id.toString(), new MaxHeap());
+    }
+
+    res.json({ message: 'Demo ready', hospitalId: demoHospital._id });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // 2. Get Hospital Stats (for Admin Dashboard)
 app.get('/api/hospitals/:id', async (req, res) => {
   try {

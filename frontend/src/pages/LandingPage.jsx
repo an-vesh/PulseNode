@@ -3,9 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { ActivitySquare, ArrowRight, ShieldCheck, Zap, Server, Clock, HeartPulse, Building2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
+
+  const handleDemoLogin = async () => {
+    setIsDemoLoading(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/auth/demo`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && data.hospitalId) {
+        navigate(`/hospital/${data.hospitalId}`);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsDemoLoading(false);
+    }
+  };
 
   useEffect(() => {
     const updateMousePosition = (e) => {
@@ -80,28 +98,43 @@ export default function LandingPage() {
             PulseNode is a real-time, multi-tenant SaaS application that mathematically optimizes Emergency Room resource allocation, ensuring the most critical patients get beds instantly.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-            <button 
-              onClick={() => navigate('/register')}
-              className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all flex items-center gap-2 group shadow-[0_0_30px_rgba(236,72,153,0.4)]"
-            >
-              Initialize Your ER Dashboard
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button 
-              onClick={() => navigate('/login')}
-              className="px-8 py-4 rounded-full font-bold text-lg text-white bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-md transition-colors"
-            >
-              Admin Login
-            </button>
-            <button 
-              onClick={() => {
-                document.getElementById('problem').scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 rounded-full font-bold text-lg text-slate-400 hover:text-white transition-colors"
-            >
-              Learn How It Works
-            </button>
+          <div className="flex flex-col items-center justify-center gap-6 mt-8">
+            <div className="flex flex-col items-center gap-3">
+              <button 
+                onClick={handleDemoLogin}
+                disabled={isDemoLoading}
+                className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-10 py-5 rounded-full font-black text-xl hover:scale-105 transition-all flex items-center gap-3 shadow-[0_0_40px_rgba(236,72,153,0.5)] border border-pink-400/30"
+              >
+                {isDemoLoading ? 'Loading Workspace...' : 'Access Live Demo Dashboard'}
+                {!isDemoLoading && <ArrowRight className="w-6 h-6 animate-pulse" />}
+              </button>
+              <span className="text-pink-300 font-medium text-sm">
+                Try our highlight feature for free without registering.
+              </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+              <button 
+                onClick={() => navigate('/register')}
+                className="px-6 py-3 rounded-full font-bold text-sm text-white bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-md transition-colors"
+              >
+                Create Account
+              </button>
+              <button 
+                onClick={() => navigate('/login')}
+                className="px-6 py-3 rounded-full font-bold text-sm text-white bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-md transition-colors"
+              >
+                Admin Login
+              </button>
+              <button 
+                onClick={() => {
+                  document.getElementById('problem').scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-6 py-3 rounded-full font-bold text-sm text-slate-400 hover:text-white transition-colors"
+              >
+                Learn How It Works
+              </button>
+            </div>
           </div>
         </motion.div>
       </section>
