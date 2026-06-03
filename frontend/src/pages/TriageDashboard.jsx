@@ -107,7 +107,7 @@ export default function TriageDashboard() {
 
         {/* Right Column: Bed Management (4 cols) */}
         <div className="lg:col-span-4 xl:col-span-4 h-[calc(100vh-200px)]">
-          <BedManagement beds={beds} backendUrl={BACKEND_URL} hospitalId={hospitalId} />
+          <BedManagement beds={beds} queueLength={queue.length} backendUrl={BACKEND_URL} hospitalId={hospitalId} />
         </div>
 
       </div>

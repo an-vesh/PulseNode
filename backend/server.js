@@ -244,6 +244,41 @@ app.post('/api/beds/discharge', async (req, res) => {
   }
 });
 
+// 5.5 Auto-Allocate Empty Beds
+app.post('/api/beds/auto-allocate', async (req, res) => {
+  try {
+    const { hospitalId } = req.body;
+    if (!hospitalId) return res.status(400).json({ error: 'hospitalId required' });
+
+    const q = hospitalQueues.get(hospitalId);
+    if (!q || q.toArray().length === 0) {
+      return res.status(400).json({ error: 'No patients in queue' });
+    }
+
+    const emptyBeds = await Bed.find({ hospitalId, isOccupied: false });
+    if (emptyBeds.length === 0) {
+      return res.status(400).json({ error: 'No empty beds available' });
+    }
+
+    let allocatedCount = 0;
+    for (const bed of emptyBeds) {
+      const highestPriorityPatient = q.extractMax();
+      if (!highestPriorityPatient) break; // Queue is empty
+
+      bed.isOccupied = true;
+      bed.patientId = highestPriorityPatient._id;
+      bed.lastUpdated = Date.now();
+      await bed.save();
+      allocatedCount++;
+    }
+
+    emitState(hospitalId);
+    res.status(200).json({ message: `Successfully allocated ${allocatedCount} beds` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // 6. Delete Hospital Profile
 app.delete('/api/hospitals/:id', async (req, res) => {
   try {

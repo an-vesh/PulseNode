@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BedDouble, CheckCircle2, AlertCircle, LogOut } from 'lucide-react';
 
-export default function BedManagement({ beds, backendUrl, hospitalId }) {
+export default function BedManagement({ beds, queueLength, backendUrl, hospitalId }) {
   const [loadingBed, setLoadingBed] = useState(null);
+  const [allocating, setAllocating] = useState(false);
 
   const handleDischarge = async (bedId) => {
     setLoadingBed(bedId);
@@ -17,6 +18,21 @@ export default function BedManagement({ beds, backendUrl, hospitalId }) {
       console.error(err);
     } finally {
       setLoadingBed(null);
+    }
+  };
+
+  const handleAutoAllocate = async () => {
+    setAllocating(true);
+    try {
+      await fetch(`${backendUrl}/api/beds/auto-allocate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hospitalId })
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAllocating(false);
     }
   };
 
@@ -42,13 +58,22 @@ export default function BedManagement({ beds, backendUrl, hospitalId }) {
           <BedDouble className="w-5 h-5 text-rose-400" />
           <h2 className="text-lg font-semibold text-white">Resource Matcher</h2>
         </div>
-        <div className="text-right">
-          <div className="text-sm font-medium text-slate-300">{occupiedBeds} / {totalBeds} Occupied</div>
-          <div className="w-24 h-1.5 bg-slate-700 rounded-full mt-1.5 overflow-hidden">
-            <div 
-              className={`h-full rounded-full ${occupancyRate > 80 ? 'bg-rose-500' : 'bg-emerald-500'}`} 
-              style={{ width: `${occupancyRate}%` }}
-            ></div>
+        <div className="flex items-center space-x-4">
+          <button 
+            onClick={handleAutoAllocate}
+            disabled={allocating || queueLength === 0 || occupiedBeds === totalBeds}
+            className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow transition-colors"
+          >
+            {allocating ? 'Allocating...' : 'Auto-Allocate'}
+          </button>
+          <div className="text-right">
+            <div className="text-sm font-medium text-slate-300">{occupiedBeds} / {totalBeds} Occupied</div>
+            <div className="w-24 h-1.5 bg-slate-700 rounded-full mt-1.5 overflow-hidden">
+              <div 
+                className={`h-full rounded-full ${occupancyRate > 80 ? 'bg-rose-500' : 'bg-emerald-500'}`} 
+                style={{ width: `${occupancyRate}%` }}
+              ></div>
+            </div>
           </div>
         </div>
       </div>
