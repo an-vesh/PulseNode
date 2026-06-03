@@ -48,8 +48,8 @@ export default function LandingPage() {
       />
 
       {/* Ambient Glowing Orbs */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-700/20 rounded-full blur-[150px] pointer-events-none"></div>
+      <div className="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-700/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
 
       {/* Navbar */}
       <nav className="w-full p-6 flex justify-between items-center max-w-6xl mx-auto z-50 relative">
@@ -64,13 +64,13 @@ export default function LandingPage() {
             onClick={() => navigate('/login')}
             className="text-sm font-bold text-slate-300 hover:text-white transition-colors"
           >
-            Admin Login
+            Login to Your Hospital
           </button>
           <button 
             onClick={() => navigate('/register')}
             className="text-sm font-bold text-white bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-2.5 rounded-full hover:scale-105 transition-all shadow-lg shadow-pink-500/25"
           >
-            Partner With Us
+            Register Your Hospital
           </button>
         </div>
       </nav>
@@ -87,14 +87,14 @@ export default function LandingPage() {
             The Next Generation SaaS Platform for Hospitals
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
             Stop waiting. Start saving lives with <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">
               Algorithmic Triage.
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-base md:text-lg text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
             PulseNode is a real-time, multi-tenant SaaS application that mathematically optimizes Emergency Room resource allocation, ensuring the most critical patients get beds instantly.
           </p>
 
@@ -109,7 +109,7 @@ export default function LandingPage() {
                 {!isDemoLoading && <ArrowRight className="w-6 h-6 animate-pulse" />}
               </button>
               <span className="text-pink-300 font-medium text-sm">
-                Try our highlight feature for free without registering.
+                Try the main feature without registering.
               </span>
             </div>
 
@@ -211,23 +211,23 @@ export default function LandingPage() {
       </section>
 
       {/* Scale Section */}
-      <section className="relative py-24 px-6 bg-slate-900/50 border-y border-slate-800">
+      <section className="relative py-24 px-6 border-y border-white/5">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-black text-white mb-12">
             Engineered for Unprecedented Scale
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 border border-slate-700 bg-slate-800/30 rounded-3xl backdrop-blur-sm">
+            <div className="p-8 border border-white/10 bg-white/5 rounded-3xl backdrop-blur-md hover:-translate-y-1 transition-transform">
               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-pink-600 mb-4">1.5M+</div>
               <h4 className="text-xl font-bold text-white mb-2">Patients Simultaneously</h4>
               <p className="text-slate-400">Because we maintain a distributed Map of Max-Heaps in RAM, Node.js can easily handle up to 1.5 million active triage patients in a single instance without breaking a sweat.</p>
             </div>
-            <div className="p-8 border border-slate-700 bg-slate-800/30 rounded-3xl backdrop-blur-sm">
+            <div className="p-8 border border-white/10 bg-white/5 rounded-3xl backdrop-blur-md hover:-translate-y-1 transition-transform">
               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 mb-4">O(log N)</div>
               <h4 className="text-xl font-bold text-white mb-2">Insertion Time</h4>
               <p className="text-slate-400">Traditional arrays require O(N) shifts when a new critical patient arrives. Our Priority Queue algorithm mathematically guarantees O(log N) performance, meaning zero UI lag even during mass casualty events.</p>
             </div>
-            <div className="p-8 border border-slate-700 bg-slate-800/30 rounded-3xl backdrop-blur-sm">
+            <div className="p-8 border border-white/10 bg-white/5 rounded-3xl backdrop-blur-md hover:-translate-y-1 transition-transform">
               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600 mb-4">&lt; 2 MB</div>
               <h4 className="text-xl font-bold text-white mb-2">Memory per Hospital</h4>
               <p className="text-slate-400">By optimizing our data structures, a busy hospital with 100 active ER patients consumes under 2 megabytes of RAM. Extremely cost-effective for multi-tenant SaaS scaling.</p>
@@ -251,6 +251,21 @@ export default function LandingPage() {
           </button>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 bg-[#030014] py-8 text-center text-slate-500 text-sm">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <ActivitySquare className="w-5 h-5 text-pink-500/50" />
+            <span className="font-bold text-slate-400">PulseNode</span>
+          </div>
+          <p>© {new Date().getFullYear()} PulseNode. All rights reserved.</p>
+          <div className="flex gap-4">
+            <span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span>
+          </div>
+        </div>
+      </footer>
 
     </div>
   );
