@@ -1,5 +1,7 @@
 # PulseNode 🏥⚡
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Access_Here-ec4899?style=for-the-badge)](https://pulse-node-tan.vercel.app/)
+
 > **Stop waiting. Start saving lives with Algorithmic Triage.**
 
 PulseNode is a real-time, multi-tenant SaaS application designed to revolutionize how Emergency Rooms manage patient intake and resource allocation. By completely automating triage sorting and bed management, PulseNode ensures the most critical patients receive care instantly.
